@@ -1,0 +1,21 @@
+{
+    "name": "solve/fsservice",
+    "type": "library",
+    "description": " - [ FSService ] Filesystem service",
+    "keywords": ["file","filesystem","helper"],
+    "homepage": "http://github.com/Solve/FSService",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alexandr Viniychuk",
+            "email": "alexandr.viniychuk@icloud.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "autoload": {
+        "psr-0": { "Solve\\Utils\\": "" }
+    },
+    "target-dir": "Solve/Utils"
+}
