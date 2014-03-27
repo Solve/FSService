@@ -211,7 +211,8 @@ class FSService {
      * @return mixed
      */
     public static function getWebRoot() {
-        return self::$_webRoot;
+        $defaultWebRoot = empty($_SERVER['DOCUMENT_ROOT']) ? '' : $_SERVER['DOCUMENT_ROOT'] . '/';
+        return self::$_webRoot ? self::$_webRoot : $defaultWebRoot;
     }
 
 
