@@ -212,6 +212,7 @@ class FSService {
      */
     public static function getWebRoot() {
         $defaultWebRoot = empty($_SERVER['DOCUMENT_ROOT']) ? '' : $_SERVER['DOCUMENT_ROOT'] . '/';
+        $defaultWebRoot = str_replace('//', '/', $defaultWebRoot);
         return self::$_webRoot ? self::$_webRoot : $defaultWebRoot;
     }
 
