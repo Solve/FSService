@@ -188,6 +188,7 @@ class FSService {
             'is_exists' => true,
             'link'      => $link_folder.$file_name.$ext,
             'path'      => $path,
+            'type'      => mime_content_type($path),
             'full_name' => $file_name.$ext,
             'name'      => $file_name,
             'ext'       => $ext
@@ -198,6 +199,13 @@ class FSService {
         }
         $value['size'] = ceil($value['size']).' '.$mess[$i];
         return $value;
+    }
+
+    public static function showFileAndExit($path) {
+        if (!is_file($path)) return false;
+        header('Content-type: '.mime_content_type($path));
+        echo file_get_contents($path);
+        die();
     }
 
     /**
