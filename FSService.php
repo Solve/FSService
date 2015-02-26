@@ -163,11 +163,28 @@ class FSService {
         if (!is_file($path)) return array(
             'is_exists' => false
         );
+        $result = self::getFileInfoFromString($path);
 
+        $mess = array('b', 'Kb', 'Mb', 'Gb', 'Tb');
+        $i = 0;
+        $value = $result + array(
+                'size'      => @filesize(realpath($path)),
+                'is_exists' => true,
+                'path'      => $path,
+                'type'      => mime_content_type($path)
+            );
+        while(($i < count($mess) - 1) && ($value['size'] > 1024)) {
+            $i++;
+            $value['size'] = $value['size'] / 1024;
+        }
+        $value['size'] = ceil($value['size']).' '.$mess[$i];
+        return $value;
+    }
+
+    public static function getFileInfoFromString($path) {
         $last_slash = strrpos($path, '/');
         $folder     = '';
         $file       = $path;
-
         if ($last_slash !== false) {
             $folder = substr($path, 0, $last_slash);
             $file = substr($path, $last_slash+1);
@@ -179,26 +196,15 @@ class FSService {
             $file_name  = substr($file, 0, $ext_pos);
             $ext        = substr($file, $ext_pos);
         }
-
-        $mess = array('b', 'Kb', 'Mb', 'Gb', 'Tb');
-        $i = 0;
         $link_folder = substr($folder, mb_strlen(self::getWebRoot())) . '/';
-        $value = array(
-            'size'      => @filesize(realpath($path)),
-            'is_exists' => true,
+
+        return array(
             'link'      => $link_folder.$file_name.$ext,
-            'path'      => $path,
-            'type'      => mime_content_type($path),
             'full_name' => $file_name.$ext,
             'name'      => $file_name,
-            'ext'       => $ext
+            'ext'       => $ext,
+            'folder'    => $folder
         );
-        while(($i < count($mess) - 1) && ($value['size'] > 1024)) {
-            $i++;
-            $value['size'] = $value['size'] / 1024;
-        }
-        $value['size'] = ceil($value['size']).' '.$mess[$i];
-        return $value;
     }
 
     public static function showFileAndExit($path) {
